@@ -1,4 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <item name="txt1" type="id" />
+    <item name="btn" type="id" />
+    <item name="ImageId" type="id" />
+    <item name="textNom" type="id" />
+    <item name="EditNom" type="id" />
+    <item name="textPrenom" type="id" />
+    <item name="EditPrenom" type="id" />
+    <item name="textClasse" type="id" />
+    <item name="EditClasse" type="id" />
+    <item name="textRemarque" type="id" />
+    <item name="EditRemarque" type="id" />
+    <item name="texte" type="id" />
 </resources>
