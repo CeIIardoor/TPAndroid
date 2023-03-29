@@ -4,16 +4,17 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainActivity">
-
+    tools:context=".MainActivity"
+    android:background="@drawable/background"
+    >
     <Button
         android:id="@id/btn"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/enregistrer"
         app:layout_constraintBottom_toBottomOf="parent"
+        android:onClick="onRegisterClick"
         />
-<!--    center it-->
     <ImageView
         android:id="@id/ImageId"
         android:src="@mipmap/ic_launcher"

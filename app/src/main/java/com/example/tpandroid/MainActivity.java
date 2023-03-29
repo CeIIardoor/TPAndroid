@@ -4,7 +4,9 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -45,5 +47,10 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onRestart() {
         super.onRestart();
+    }
+
+    public void onRegisterClick(View view) {
+        Log.d(TAG, "onRegisterClick() called");
+        Toast.makeText(this, "Register Clicked", Toast.LENGTH_SHORT).show();
     }
 }
