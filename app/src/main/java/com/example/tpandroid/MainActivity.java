@@ -6,6 +6,9 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
+import com.android.volley.*;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.*;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -19,8 +22,24 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onStart() {
-        Log.d("MainActivity", "onStart() called");
         super.onStart();
+        //test volley connection
+        VolleySingleton.getInstance(this).addToRequestQueue(
+                new StringRequest(Request.Method.GET, "http://www.google.com",
+                        new Response.Listener<String>() {
+                            @Override
+                            public void onResponse(String response) {
+                                Log.d("MainActivity", "onResponse() called with: response = [" + response + "]");
+                            }
+                        },
+                        new Response.ErrorListener() {
+                            @Override
+                            public void onErrorResponse(VolleyError error) {
+                                Log.d("MainActivity", "onErrorResponse() called with: error = [" + error + "]");
+                            }
+                        }
+                )
+        );
     }
 
     @Override
