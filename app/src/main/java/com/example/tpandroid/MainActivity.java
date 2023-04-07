@@ -7,12 +7,15 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 import com.android.volley.*;
+import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.StringRequest;
-import com.android.volley.*;
+
+import org.json.JSONObject;
 
 public class MainActivity extends AppCompatActivity {
 
     private static final String TAG = MainActivity.class.getSimpleName();
+    private static final String HTTP_URL = "https://belatar.name/rest/profile.php?login=test&passwd=test&id=1";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -21,14 +24,14 @@ public class MainActivity extends AppCompatActivity {
     }
 
     @Override
-    protected void onStart() {
-        super.onStart();
+    protected void onResume() {
+        super.onResume();
         //test volley connection
         VolleySingleton.getInstance(this).addToRequestQueue(
-                new StringRequest(Request.Method.GET, "http://www.google.com",
-                        new Response.Listener<String>() {
+                new JsonObjectRequest(Request.Method.GET, HTTP_URL, null,
+                        new Response.Listener<JSONObject>() {
                             @Override
-                            public void onResponse(String response) {
+                            public void onResponse(JSONObject response) {
                                 Log.d("MainActivity", "onResponse() called with: response = [" + response + "]");
                             }
                         },
@@ -55,11 +58,6 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onPause() {
         super.onPause();
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
     }
 
     @Override
