@@ -5,44 +5,71 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.ArrayAdapter;
+import android.widget.EditText;
+import android.widget.ListView;
 import android.widget.Toast;
+
 import com.android.volley.*;
 import com.android.volley.toolbox.JsonObjectRequest;
-import com.android.volley.toolbox.StringRequest;
 
+import org.json.JSONArray;
 import org.json.JSONObject;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
     private static final String TAG = MainActivity.class.getSimpleName();
-    private static final String HTTP_URL = "https://belatar.name/rest/profile.php?login=test&passwd=test&id=1";
+    private static final String HTTP_URL = "https://belatar.name/rest/profile.php?login=test&passwd=test&id=9998";
+
+    private static final String HTTP_URL_NOTES = "https://belatar.name/rest/profile.php?login=test&passwd=test&id=9998&notes=true";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        Log.d(TAG, "onCreate() called");
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        //test volley connection
-        VolleySingleton.getInstance(this).addToRequestQueue(
-                new JsonObjectRequest(Request.Method.GET, HTTP_URL, null,
-                        new Response.Listener<JSONObject>() {
-                            @Override
-                            public void onResponse(JSONObject response) {
-                                Log.d("MainActivity", "onResponse() called with: response = [" + response + "]");
+
+        if (getResources().getConfiguration().orientation == 2) {
+            Toast.makeText(this, "horizental", Toast.LENGTH_SHORT).show();
+
+            JsonObjectRequest req_notes = new JsonObjectRequest(Request.Method.GET, HTTP_URL_NOTES, null,
+                    response -> {
+                        Log.d("MainActivity", "onResponse() called with: response = [" + response + "]");
+                        ListView list = findViewById(R.id.listeNotes);
+                        List<String> data = new ArrayList<>();
+                        try {
+                            JSONArray notesArray = response.getJSONArray("notes");
+                            for (int i = 0; i < notesArray.length(); i++) {
+                                JSONObject note = notesArray.getJSONObject(i);
+                                String matiere = note.getString("matiere");
+                                String score = note.getString("score");
+                                data.add(matiere + " : " + score);
                             }
-                        },
-                        new Response.ErrorListener() {
-                            @Override
-                            public void onErrorResponse(VolleyError error) {
-                                Log.d("MainActivity", "onErrorResponse() called with: error = [" + error + "]");
-                            }
+                        } catch (Exception e) {
+                            Log.d("MainActivity", "onResponse() called with: response = [" + response + "]");
                         }
-                )
-        );
+                        ArrayAdapter<String> adapter = new ArrayAdapter<>(list.getContext(), R.layout.notes_line, data);
+                        list.setAdapter(adapter);
+                    },
+                    error -> Log.d("MainActivity", "onErrorResponse() called with: error = [" + error + "]")
+            );
+            VolleySingleton.getInstance(getApplicationContext()).addToRequestQueue(req_notes);
+
+        } else {
+            JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, HTTP_URL, null,
+                    response -> Log.d("MainActivity", "onResponse() called with: response = [" + response + "]"),
+                    error -> Log.d("MainActivity", "onErrorResponse() called with: error = [" + error + "]")
+            );
+            VolleySingleton.getInstance(getApplicationContext()).addToRequestQueue(request);
+        }
     }
 
     @Override
@@ -67,6 +94,9 @@ public class MainActivity extends AppCompatActivity {
 
     public void onRegisterClick(View view) {
         Log.d(TAG, "onRegisterClick() called");
+//        Etudiant etudiant = new Etudiant(findViewById(R.id.EditNom).getId(), findViewById(R.id.EditPrenom).toString(), findViewById(R.id.EditClasse).toString());
+//        EditText txtNom = findViewById(R.id.EditNom);
         Toast.makeText(this, "Register Clicked", Toast.LENGTH_SHORT).show();
     }
+
 }
